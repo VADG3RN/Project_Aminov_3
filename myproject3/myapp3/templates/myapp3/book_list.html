@@ -1,0 +1,26 @@
+{% extends 'myapp3/base.html' %}
+
+{% block title %}Список книг{% endblock %}
+
+{% block content %}
+<h1>Список всех книг</h1>
+
+{% if books %}
+    {% for book in books %}
+        <div class="book-item">
+            <h3>{{ book.title }}</h3>
+            <p><strong>Автор:</strong> {{ book.author }}</p>
+            <p><strong>Год издания:</strong> {{ book.year }}</p>
+            <p><strong>Страниц:</strong> {{ book.pages }}</p>
+            {% if book.genre %}
+                <p><strong>Жанр:</strong> {{ book.genre }}</p>
+            {% endif %}
+            {% if book.description %}
+                <p><strong>Описание:</strong> {{ book.description }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Книг пока нет в базе данных.</p>
+{% endif %}
+{% endblock %}

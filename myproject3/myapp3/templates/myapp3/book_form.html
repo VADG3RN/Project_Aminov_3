@@ -1,0 +1,33 @@
+{% extends 'myapp3/base.html' %}
+
+{% block title %}Добавить книгу{% endblock %}
+
+{% block content %}
+<h1>Добавить новую книгу</h1>
+<form method="post">
+    {% csrf_token %}
+    
+    {% if form.errors %}
+        <div class="error">
+            Пожалуйста, исправьте ошибки ниже.
+        </div>
+    {% endif %}
+    
+    {% for field in form %}
+        <div>
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+                <div style="color: red;">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+            {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+    <button type="submit">Сохранить книгу</button>
+</form>
+{% endblock %}

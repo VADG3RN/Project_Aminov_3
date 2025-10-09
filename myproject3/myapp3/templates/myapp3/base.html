@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Библиотека книг{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .nav { background: #f4f4f4; padding: 10px; margin-bottom: 20px; }
+        .nav a { margin-right: 15px; text-decoration: none; color: #333; }
+        .nav a:hover { text-decoration: underline; }
+        .message { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .book-item { border: 1px solid #ddd; padding: 15px; margin: 10px 0; }
+        .json-file { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'book_form' %}">Добавить книгу</a>
+        <a href="{% url 'upload_json' %}">Загрузить JSON</a>
+        <a href="{% url 'book_list' %}">Список книг</a>
+        <a href="{% url 'json_files_list' %}">JSON файлы</a>
+        <a href="{% url 'export_books_json' %}">Экспорт JSON</a>
+    </div>
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

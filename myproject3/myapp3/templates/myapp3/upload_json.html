@@ -1,0 +1,45 @@
+{% extends 'myapp3/base.html' %}
+
+{% block title %}Загрузить JSON{% endblock %}
+
+{% block content %}
+<h1>Загрузить JSON файл с данными о книге</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {% if form.errors %}
+        <div class="error">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <div>
+        {{ form.json_file.label_tag }}
+        {{ form.json_file }}
+        {% if form.json_file.errors %}
+            <div style="color: red;">
+                {{ form.json_file.errors }}
+            </div>
+        {% endif %}
+        {% if form.json_file.help_text %}
+            <small>{{ form.json_file.help_text }}</small>
+        {% endif %}
+    </div>
+    
+    <button type="submit">Загрузить файл</button>
+</form>
+
+<h2>Пример структуры JSON файла:</h2>
+<pre>
+{
+  "title": "Название книги",
+  "author": "Автор книги",
+  "year": 2023,
+  "pages": 300,
+  "genre": "Роман",
+  "description": "Описание книги"
+}
+</pre>
+{% endblock %}
