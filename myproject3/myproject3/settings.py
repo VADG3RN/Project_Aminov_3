@@ -125,6 +125,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Создание папки для JSON файлов
-BOOKS_DATA_DIR = os.path.join(BASE_DIR, 'books_data')
+BOOKS_JSON_DIR = os.path.join(BASE_DIR, 'books_json')

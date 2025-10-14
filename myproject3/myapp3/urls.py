@@ -1,11 +1,12 @@
 from django.urls import path
 from . import views
 
+app_name = 'books'
+
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('book/form/', views.book_form, name='book_form'),
-    path('book/upload/', views.upload_json, name='upload_json'),
-    path('book/list/', views.book_list, name='book_list'),
-    path('book/json-files/', views.json_files_list, name='json_files_list'),
-    path('book/export/', views.export_books_json, name='export_books_json'),
+    path('add/', views.book_form_view, name='book_form'),
+    path('books/', views.main_books_view, name='books_main'),
+    path('upload/', views.upload_json_view, name='upload_json'),
+    path('files/', views.list_files_view, name='list_files'),
+    path('files/<str:filename>/', views.view_json_content, name='view_json'),
 ]

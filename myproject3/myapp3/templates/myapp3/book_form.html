@@ -1,33 +1,16 @@
-{% extends 'myapp3/base.html' %}
-
-{% block title %}Добавить книгу{% endblock %}
-
-{% block content %}
-<h1>Добавить новую книгу</h1>
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Добавить книгу</title></head>
+<body>
+<h1>Добавить книгу</h1>
+{% if messages %}{% for m in messages %}<p>{{ m }}</p>{% endfor %}{% endif %}
 <form method="post">
-    {% csrf_token %}
-    
-    {% if form.errors %}
-        <div class="error">
-            Пожалуйста, исправьте ошибки ниже.
-        </div>
-    {% endif %}
-    
-    {% for field in form %}
-        <div>
-            {{ field.label_tag }}
-            {{ field }}
-            {% if field.errors %}
-                <div style="color: red;">
-                    {{ field.errors }}
-                </div>
-            {% endif %}
-            {% if field.help_text %}
-                <small>{{ field.help_text }}</small>
-            {% endif %}
-        </div>
-    {% endfor %}
-    
-    <button type="submit">Сохранить книгу</button>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Сохранить</button>
 </form>
-{% endblock %}
+<p><a href="{% url 'books:books_main' %}">Просмотреть общий JSON</a></p>
+<p><a href="{% url 'books:upload_json' %}">Загрузить JSON-файл</a></p>
+<p><a href="{% url 'books:list_files' %}">Список файлов</a></p>
+</body>
+</html>

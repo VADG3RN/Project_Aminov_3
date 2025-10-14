@@ -1,29 +1,41 @@
 from django import forms
-from .models import Book
-import json
+from .utils import BOOK_FIELDS
+import datetime
 
-class BookForm(forms.ModelForm):
-    class Meta:
-        model = Book
-        fields = ['title', 'author', 'year', 'pages', 'genre', 'description']
-        widgets = {
-            'description': forms.Textarea(attrs={'rows': 4}),
-        }
-    
-    def clean_year(self):
-        year = self.cleaned_data.get('year')
-        if year < 1000 or year > 2030:
-            raise forms.ValidationError("Введите корректный год издания")
-        return year
-    
-    def clean_pages(self):
-        pages = self.cleaned_data.get('pages')
-        if pages <= 0:
-            raise forms.ValidationError("Количество страниц должно быть положительным числом")
-        return pages
+CURRENT_YEAR = datetime.date.today().year
 
-class JSONUploadForm(forms.Form):
-    json_file = forms.FileField(
-        label="Выберите JSON файл",
-        help_text="Файл должен быть в формате JSON"
-    )
+
+def create_dynamic_book_form():
+    fields = {}
+    for f in BOOK_FIELDS:
+        name = f["name"]
+        label = f["label"]
+
+        # создаём подходящее поле в зависимости от имени
+        if name == "pages":
+            field = forms.IntegerField(label=label, min_value=1)
+        elif name == "year":
+            field = forms.IntegerField(label=label, min_value=1, max_value=CURRENT_YEAR)
+        else:
+            field = forms.CharField(label=label, max_length=200)
+
+        fields[name] = field
+
+    return type("BookForm", (forms.Form,), fields)
+
+
+BookForm = create_dynamic_book_form()
+
+
+class UploadJSONForm(forms.Form):
+    title = forms.CharField(label='Название файла (для списка)', required=False, max_length=200)
+    file = forms.FileField(label='JSON-файл')
+
+    def clean_file(self):
+        f = self.cleaned_data['file']
+        name = f.name.lower()
+        if not name.endswith('.json'):
+            raise forms.ValidationError('Разрешены только файлы .json')
+        if f.size > 5 * 1024 * 1024:
+            raise forms.ValidationError('Файл слишком большой (макс 5 MB).')
+        return f
